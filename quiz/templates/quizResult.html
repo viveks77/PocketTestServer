@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="content-card">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'quizList' %}">My Quizzes</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'quizEdit' quiz.pk %}">{{ quiz.title }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Results</li>
+        </ol>
+      </nav>
+      <h2 class="mb-3">{{ quiz.title }} Results</h2>
+      <div class="quizResult-content">
+          {% for taken_quiz in taken_quizzes %}
+          <div class="quizResult-card">
+            <p>Name : {{ taken_quiz.user.name }}</p>
+            <p class="text-primary">{{ taken_quiz.user.email }}</p>
+            <p>scored <strong>{{ taken_quiz.score }}</strong> marks!</p>
+        </div>
+            {% empty %}
+            <div class="card-content">
+                <p style="margin-bottom: 5px;">No one has given any tests yet.</p>
+            </div>
+            {% endfor %}
+      </div>
+  </div>
+{% endblock %}

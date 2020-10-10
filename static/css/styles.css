@@ -1,0 +1,96 @@
+body{
+    background-color: #ebebeb;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.hide{
+    display: none;
+}
+
+.content{
+    height: 100%;
+    width: 100%;
+}
+
+.signup-card{
+    background-color: white;
+    margin-top: 5%;
+    border-radius: 10px;
+    padding: 20px;
+    width: 700px;
+}
+
+.signup-content{
+    padding: 10px;
+}
+
+.content-card{
+    margin: 15px;
+    padding:20px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.quizList-content{
+    margin: 15px 0px;
+}
+
+.header{
+    margin-top:20px;
+}
+
+.quiz-list-cards{
+    margin: 20px 0px;
+}
+
+.card-content{
+    margin:5px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #E9ECEF;
+}
+
+.quizEdit-content{
+    margin-top: 20px;
+}
+
+.quiz-wrapper{
+    display: flex;
+    max-width: 450px;
+    font-size: 20px;
+}
+
+.quiz-titles{
+    width: 160px;
+}
+
+.btn-edit{
+    padding: 0;
+    background-color: transparent;
+    text-decoration : underline;
+    border : none;
+}
+
+.question-content{
+    margin-top: 10px;
+}
+
+.quizResult-card{
+    margin:5px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #E9ECEF;
+}
+
+.quizResult-card  p{
+    margin-bottom: 1px
+}
+
+.userupdate-wrapper{
+    display: flex;
+    max-width: 450px;
+    font-size: 20px;
+}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{%block content %}
+<div class="content-card">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'quizList' %}">My Quiz</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'quizEdit' quiz.pk %}">{{ quiz.title }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{question.content}}</li>
+            </ol>
+          </nav>
+          <div class='questionEdit-content'>
+              <h3>{{question.content}}</h3>
+              <button class="btn btn-outline-primary my-4 questionEdit-btn">Edit Question</button>
+              <a href="{% url 'questionDelete' quiz.pk question.pk %}" class="btn btn-outline-danger" role="button">Delete</a>
+              <div class="questionEdit-titles">
+                <div class="quiz-wrapper">
+                    <p class="quiz-titles">Question :</p>
+                    <span class="mx-3">{{ question.content }}</span>
+                </div>
+                <div class="quiz-wrapper">
+                    <p class="quiz-titles">Marks :</p>
+                    <span class="mx-3">{{ question.marks }}</span>
+                </div>
+              </div>
+              <form method="POST">
+                {% csrf_token %}  
+                {{ formset.management_form }}
+                <div class="form-group my-3 questionEdit-form hide" style="width: 450px;">
+                    <label for="id_content">Content</label>
+                    {{ form.content }}
+                    <label for="id_marks">Marks</label>
+                    {{ form.marks }}
+                </div>
+                <div class="card mb-3{% if formset.errors %} border-danger{% endif %}">
+                    <div class="card-header">
+                      <div class="row">
+                        <div class="col-8">
+                          <strong>Answers</strong>
+                        </div>
+                        <div class="col-2">
+                          <strong>Correct?</strong>
+                        </div>
+                        <div class="col-2">
+                          <strong>Delete?</strong>
+                        </div>
+                      </div>
+                    </div>
+                    {% for error in formset.non_form_errors %}
+                      <div class="card-body bg-danger border-danger text-white py-2">{{ error }}</div>
+                    {% endfor %}
+                    <div class="list-group list-group-flush list-group-formset">
+                      {% for form in formset %}
+                        <div class="list-group-item">
+                          <div class="row">
+                            <div class="col-8">
+                              {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+                              {{ form.content }}
+                              {% if form.instance.pk and form.content.value != form.instance.content %}<p class="mb-0 mt-1"><small class="text-muted font-italic"><strong>Old answer:</strong> {{ form.instance.content }}</small></p>{% endif %}
+                            </div>
+                            <div class="col-2">
+                              {{ form.is_correct }}
+                            </div>
+                            <div class="col-2">
+                              {% if form.instance.pk %}
+                                {{ form.DELETE }}
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <p>
+                    <small class="form-text text-muted">Your question may have at least <strong>4</strong> answers. Select at least one correct answer.</small>
+                  </p>
+                  <button type="submit" class="btn btn-success">Save changes</button>
+                  <a href="{% url 'quizEdit' quiz.pk %}" class="btn btn-outline-secondary" role="button">Nevermind</a>
+              </form>
+          </div>
+    </div>
+</div>
+<script>
+    questionForm = document.querySelector('.questionEdit-form');
+    questionContent = document.querySelector('.questionEdit-titles');
+    editQuestionBtn = document.querySelector('.questionEdit-btn');
+
+
+    editQuestionBtn.addEventListener('click', () => {
+        questionContent.classList.add('hide');
+        questionForm.classList.remove('hide');
+    });
+
+</script>
+{% endblock %}

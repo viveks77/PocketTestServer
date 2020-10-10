@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="content-card">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'quizList' %}">My Quiz</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ user.name }}</li>
+            </ol>
+          </nav>
+          <div class="userupdate-content">
+            <div class="userUpdate-info my-3">
+                    <div class="userupdate-wrapper">
+                        <p class="quiz-titles">Name :</p>
+                        <span class="mx-3">{{ user.name }}</span>
+                    </div>
+                    <div class="userupdate-wrapper">
+                        <p class="quiz-titles">Email :</p>
+                        <span class="mx-3">{{ user.email }}</span>
+                    </div>
+                    <div class="userupdate-wrapper">
+                      <p class="quiz-titles">Class :</p>
+                      <span class="mx-3">{{ user.class_no }}</span>
+                    </div>
+                    <div class="userupdate-wrapper">
+                      <p class="quiz-titles">Mobile_no :</p>
+                      <span class="mx-3">{{ user.mobile_no }}</span>
+                    </div>
+                    <div class="userupdate-wrapper">
+                      <p class="quiz-titles">Address :</p>
+                      <span class="mx-3">{{ user.location }}</span>
+                  </div>
+                  <button class="btn btn-outline-secondary btnEdit">Edit</button>
+            </div>  
+            <form method="POST" class="userupdate-form hide">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="id_name">Name</label>
+                        {{ form.name }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="id_class_no">Class</label>
+                        {{ form.class_no }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="id_mobile_no">Mobile</label>
+                        {{ form.mobile_no }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="id_publish_date">Address</label>
+                        {{ form.location }}
+                    </div>
+                </div>
+                <button class="btn btn-success" type='submit'>Save</button>
+                <button class="btn btn-danger btnCancel">Cancel</button>
+            </form>
+          </div>
+          <script>
+              editBtn = document.querySelector('.btnEdit');
+              userUpdateInfo = document.querySelector('.userUpdate-info');
+              cancelBtn = document.querySelector('.btnCancel');
+              userUpdateForm = document.querySelector('.userupdate-form');
+
+              editBtn.addEventListener('click', () => {
+                userUpdateInfo.classList.add('hide');
+                userUpdateForm.classList.remove('hide');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                userUpdateForm.classList.add('hide');
+                userUpdateInfo.classList.remove('hide');
+            });
+          </script>
+    </div>
+{% endblock %}

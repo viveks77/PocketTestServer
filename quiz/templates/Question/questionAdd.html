@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="content-card">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'quizList' %}">My Quiz</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'quizEdit' quiz.pk %}">{{ quiz.title }}</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Add a Question</li>
+                </ol>
+              </nav>
+              <div class="questionAdd-content">
+                  <h3>Add new Question</h3>
+                  <p class="lead">Add first the text of the question. You can add answers in the next step.</p>
+                  <div class="qestionAdd-form" style="margin: 30px 0px;">
+                      <form method="POST">
+                          {% csrf_token %}
+                          <div class="form-group my-3" style="width: 450px;">
+                              <label for="id_content">Content</label>
+                              {{ form.content }}
+                              <label for="id_marks">Marks</label>
+                              {{ form.marks }}
+                          </div>
+                          <button type="submit" class="btn btn-primary">Add Question</button>
+                          <a href="{% url 'quizEdit' quiz.pk %}" class="btn btn-outline-danger" role="button">Nevermind</a>
+                      </form>
+                  </div>
+              </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content-card">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">Myquizes</li>
+                </ol>
+              </nav>
+            <div class="quizList-content">
+                <h1>QUIZES</h1>
+                <span class="mx-1 add-link"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                    viewBox="0 0 13 13" data-svgs-path="sm1/plus.svg">
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M6 6V.5a.5.5 0 0 1 1 0V6h5.5a.5.5 0 1 1 0 1H7v5.5a.5.5 0 1 1-1 0V7H.5a.5.5 0 0 1 0-1H6z">
+                    </path>
+                </svg><a href="{% url 'quizAdd' %}" class='text-black mx-3' role="button">Add quiz</a></span>
+                <div class="quiz-list-cards">
+                    {% for quiz in quizes %}
+                        <div class="card-content">
+                            <a href="{% url 'quizEdit' quiz.pk %}" style="font-size: 20px;">{{ quiz.title }}</a>
+                            <p style="margin-bottom: 5px;">{{ quiz.description }}</p>
+                            <p style="margin-bottom: 5px;">{{ quiz.subject }}</p>
+                            <a href="{% url 'quizResult' quiz.pk %}" style="font-size: 20px;">View Results</a>
+                        </div>
+                    {% empty %}
+                        <div class="card-content">
+                            <p style="margin-bottom: 5px;">You haven't createad any quiz yet.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

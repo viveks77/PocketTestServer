@@ -32,7 +32,6 @@ class StaffSignupView(CreateView):
 def load_subjects(request):
     class_id = request.GET.get('class_no')
     subjects = Subject.objects.filter(class_no=class_id)
-    print(subjects)
     return render(request,'Utils/subject_drop_down_list.html', {'subjects':subjects})
 
 
@@ -94,7 +93,6 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         kwargs['questions'] = self.get_object().questions.annotate(answer_count=Count('answers'))
-        print(self.get_object().questions)
         return super().get_context_data(**kwargs)
     
     def get_queryset(self):
@@ -147,6 +145,8 @@ def questionAdd(request, pk):
         if form.is_valid():
             question = form.save(commit=False)
             question.quiz = quiz
+            quiz.total_marks = quiz.total_marks + question.marks
+            quiz.save()
             question.save()
             return redirect('questionEdit', quiz.pk, question.pk)
     else:
@@ -205,6 +205,9 @@ class QuestionDeleteView(LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         question = self.get_object()
+        quiz = question.quiz
+        quiz.total_marks = quiz.total_marks - question.marks
+        quiz.save()
         return super().delete(request, *args, **kwargs)
     
     def get_queryset(self):

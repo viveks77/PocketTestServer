@@ -15,15 +15,19 @@
     <title>Pocket Test</title>
 </head>
 <body>
-    <nav class="navbar bg-dark">
-        <h1 class="logo text-white"> Pocket Test</h1>
+    <nav class="navbar collapse.navbar-collapse bg-dark">
+        {% if user.is_authenticated %}
+                <h1 class="logo text-white"><a class="nav-link" href="{% url 'quizList' %}">Pocket Test</a></h1>
+        {% else %}
+            <h1 class="logo text-white"><a class="nav-link" href="{% url 'login' %}">Pocket Test</a></h1>
+              {% endif %}
         <div class="">
             {% if user.is_authenticated %}
                 <p class="pt-3 text-white"><a href="{% url 'userUpdate' user.pk %}"><strong>{{ user.name }}</strong> </a>| <a href="{% url 'logout' %}" class="text-white">Log out</a>.</p>
               {% endif %}
         </div>
     </nav>
-    <div class="content">
+    <div class="container">
         {%  block content %}
         {% endblock %}
     </div>

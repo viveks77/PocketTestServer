@@ -24,10 +24,10 @@
                     <span class="mx-3">{{ question.marks }}</span>
                 </div>
               </div>
-              <form method="POST">
+              <form method="POST" style="max-width: 750px; margin: 15px 0px;">
                 {% csrf_token %}  
                 {{ formset.management_form }}
-                <div class="form-group my-3 questionEdit-form hide" style="width: 450px;">
+                <div class="form-group my-3 questionEdit-form hide" >
                     <label for="id_content">Content</label>
                     {{ form.content }}
                     <label for="id_marks">Marks</label>

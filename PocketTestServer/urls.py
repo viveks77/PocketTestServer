@@ -27,3 +27,6 @@ urlpatterns = [
     path('login',views.staffLoginView, name='login'),
     path('',include('quiz.urls')),
 ]
+
+handler404 = 'login.views.handler404'
+handler500 = 'login.views.handler500'

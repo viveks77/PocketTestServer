@@ -14,10 +14,10 @@
                   <h3>Add new Question</h3>
                   <p class="lead">Add first the text of the question. You can add answers in the next step.</p>
                   <div class="qestionAdd-form" style="margin: 30px 0px;">
-                      <form method="POST">
+                      <form method="POST" style="max-width: 750px; margin: 15px 0px;">
                           {% csrf_token %}
-                          <div class="form-group my-3" style="width: 450px;">
-                              <label for="id_content">Content</label>
+                          <div class="form-group my-3">
+                              <label for="id_content">Question</label>
                               {{ form.content }}
                               <label for="id_marks">Marks</label>
                               {{ form.marks }}

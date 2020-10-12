@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-  <div class="signup-card container">
+  <div class="signup-card container" style="max-width:650px;">
     <h3>REGISTER</h3>
     <div class="signup-content">
       <form method="POST" id="signupForm" data-subjects-url="{% url 'ajax_load_subjects' %}">

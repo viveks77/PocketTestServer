@@ -52,11 +52,10 @@ class UserForm(ModelForm):
 class QuizAddForm(ModelForm):
     class Meta:
         model = Quiz
-        fields = ("title", "description", "total_marks", "publish_date", "end_date")
+        fields = ("title", "description", "publish_date", "end_date")
         widgets = {
             'title': widgets.TextInput(attrs={'class':'form-control'}),
             'description': widgets.TextInput(attrs={'class':'form-control'}),
-            'total_marks': widgets.NumberInput(attrs={'class':'form-control'}),
             'publish_date': DateTimePickerInput(),
             'end_date': DateTimePickerInput(),
         }

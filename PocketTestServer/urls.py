@@ -26,6 +26,7 @@ urlpatterns = [
     path('signup', views.StaffSignupView.as_view(), name='signup'),
     path('login',views.staffLoginView, name='login'),
     path('',include('quiz.urls')),
+    path('',views.staffLoginView),
 ]
 
 handler404 = 'login.views.handler404'

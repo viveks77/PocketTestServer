@@ -14,12 +14,26 @@ class Standard(models.Model):
     def __str__(self):
         return "class: " + self.class_no
 
+class Subject(models.Model):
+    name = models.CharField(max_length=256)
+    class_no =  models.ForeignKey(Standard, on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True)
+    
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        return super(Subject, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
 class User(AbstractBaseUser, PermissionsMixin):
     
     name = models.CharField(_('name'), max_length=256)
     email = models.EmailField(_('email address'), unique=True)
     mobile_no = models.CharField(max_length=10, unique=True)
     class_no = models.ForeignKey(Standard, on_delete=models.CASCADE,  null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True)
     location = models.CharField(max_length=256)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -37,18 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class Subject(models.Model):
-    name = models.CharField(max_length=256, unique=True)
-    class_no =  models.ForeignKey(Standard, on_delete=models.CASCADE)
-    slug = models.SlugField(blank=True)
-    
 
-    def save(self, *args, **kwargs):
-        self.name = self.name.lower()
-        return super(Subject, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
 
 
 @receiver(pre_save, sender=Subject)

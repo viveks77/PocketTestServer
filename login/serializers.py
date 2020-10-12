@@ -12,7 +12,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(validated_data["email"],validated_data["password"],validated_data["mobile_no"])
         user.name = validated_data["name"]
         user.location = validated_data["location"]
-        #user.mobile_no = validated_data["mobile_no"]
         user.class_no = validated_data["class_no"]
         user.save()
         return user

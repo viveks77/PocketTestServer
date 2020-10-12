@@ -13,11 +13,10 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 from django.contrib.auth import get_user_model
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django.db.models import Count
-
+from login.models import User, Subject, Standard
 from quiz.forms import StaffRegistrationForm, UserForm, QuizAddForm, QuestionForm, BaseAnswerInlineFormset
 from quiz.models import Quiz, Question, UserAnswer, Answer 
 
-User =  get_user_model()
 
 class StaffSignupView(CreateView):
     model = User
@@ -28,6 +27,13 @@ class StaffSignupView(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('quizList')
+
+
+def load_subjects(request):
+    class_id = request.GET.get('class_no')
+    subjects = Subject.objects.filter(class_no=class_id)
+    print(subjects)
+    return render(request,'Utils/subject_drop_down_list.html', {'subjects':subjects})
 
 
 def staffLoginView(request):

@@ -1,21 +1,32 @@
-from django.forms import forms, widgets, ModelForm, BaseInlineFormSet
+from django import forms
+from django.forms import widgets, ModelForm, BaseInlineFormSet
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.forms.utils import ValidationError
 from bootstrap_datepicker_plus import DateTimePickerInput
-from login.models import User
+from login.models import User, Subject
 from quiz.models import Quiz, Question, Answer, UserAnswer
 
 #Staff registration form
 class StaffRegistrationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('name', 'email', 'class_no', 'mobile_no', 'location')
-        
+        fields = ('name', 'email', 'class_no', 'subject', 'mobile_no', 'location')
     
     def __init__(self, *args, **kwargs):
         super(StaffRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['subject'].queryset= Subject.objects.none()
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+        if 'class_no' in self.data:
+            try:
+                class_id = int(self.data.get('class_no'))
+                self.fields['subject'].queryset = Subject.objects.filter(class_no=class_id)
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fileds['subject'].queryset = self.instance.class_no.subject_set
+        
 
     def save(self, commit=True):
         user = super(StaffRegistrationForm, self).save(commit=False)
@@ -50,6 +61,8 @@ class QuizAddForm(ModelForm):
             'publish_date': DateTimePickerInput(),
             'end_date': DateTimePickerInput(),
         }
+
+
 
 
 class QuestionForm(ModelForm):

@@ -80,7 +80,6 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         quiz = form.save(commit=False)
         quiz.owner = self.request.user
-        print("(quiz/views.py) self.request.user: " + self.request.user.subject)
         quiz.subject = self.request.user.subject
         quiz.save()
         return redirect('quizEdit', quiz.pk)

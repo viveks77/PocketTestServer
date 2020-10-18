@@ -9,7 +9,7 @@ from django.forms import inlineformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView, View
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView, View, TemplateView
 from django.contrib.auth import get_user_model
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django.db.models import Count
@@ -49,7 +49,11 @@ def staffLoginView(request):
         return render(request,'Registration/login.html')
 
 
-@method_decorator(staff_member_required, name='dispatch')
+class StaffVerification(LoginRequiredMixin, TemplateView):
+    template_name="staffVerification.html"
+
+
+@method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class UpdateUserDetailsView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
@@ -60,7 +64,7 @@ class UpdateUserDetailsView(LoginRequiredMixin, UpdateView):
 
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class QuizListView(LoginRequiredMixin, ListView):
     model = Quiz
     ordering = ("title",)
@@ -70,7 +74,7 @@ class QuizListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return self.request.user.quizes.all();
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class QuizCreateView(LoginRequiredMixin, CreateView):
     model = Quiz
     form_class = QuizAddForm
@@ -84,7 +88,7 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
         return redirect('quizEdit', quiz.pk)
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class QuizEditView(LoginRequiredMixin, UpdateView):
     model = Quiz
     form_class = QuizAddForm
@@ -102,7 +106,7 @@ class QuizEditView(LoginRequiredMixin, UpdateView):
         return reverse('quizEdit', kwargs={'pk':self.object.pk})
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class QuizDeleteView(LoginRequiredMixin, DeleteView):
     model = Quiz
     context_object_name = 'quiz'
@@ -117,7 +121,7 @@ class QuizDeleteView(LoginRequiredMixin, DeleteView):
         return self.request.user.quizes.all()
     
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class QuizResultView(LoginRequiredMixin, DetailView):
     model = Quiz
     context_object_name = 'quiz'
@@ -135,7 +139,7 @@ class QuizResultView(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         return self.request.user.quizes.all()
 
-@staff_member_required
+@staff_member_required(login_url='staffverify')
 @login_required
 def questionAdd(request, pk):
     quiz = get_object_or_404(Quiz, pk=pk, owner=request.user)
@@ -155,7 +159,7 @@ def questionAdd(request, pk):
     return render(request, 'Question/questionAdd.html', {'quiz':quiz, 'form':form})
 
 
-@staff_member_required
+@staff_member_required(login_url='staffverify')
 @login_required
 def questionEdit(request, quiz_pk, question_pk):
     quiz = get_object_or_404(Quiz, pk=quiz_pk, owner=request.user)
@@ -191,7 +195,7 @@ def questionEdit(request, quiz_pk, question_pk):
     })
 
 
-@method_decorator(staff_member_required, name='dispatch')
+@method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class QuestionDeleteView(LoginRequiredMixin, DeleteView):
     model = Question
     context_object_name = 'question'

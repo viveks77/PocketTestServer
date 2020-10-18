@@ -5,6 +5,7 @@ from quiz.Views.Apis import api
 
 urlpatterns=[
     path('staff/', include([
+        path('verification',views.StaffVerification.as_view(), name="staffverify"),
         path('quizlist', views.QuizListView.as_view(), name='quizList'),
         path('quiz/add',views.QuizCreateView.as_view(), name='quizAdd'),
         path('quiz/<int:pk>/',views.QuizEditView.as_view(), name='quizEdit'),

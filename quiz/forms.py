@@ -28,13 +28,6 @@ class StaffRegistrationForm(UserCreationForm):
             self.fileds['subject'].queryset = self.instance.class_no.subject_set
         
 
-    def save(self, commit=True):
-        user = super(StaffRegistrationForm, self).save(commit=False)
-        user.is_staff = True
-        if commit:
-            user.save()
-        return user
-
 
 class UserForm(ModelForm):
     class Meta:

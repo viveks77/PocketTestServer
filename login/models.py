@@ -6,13 +6,15 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.template.defaultfilters import slugify
 
-# Create your models here.
 
+#Standard Model 
 class Standard(models.Model):
     class_no  = models.CharField(_('class'),max_length=256)
 
     def __str__(self):
         return "class: " + self.class_no
+
+
 
 class Subject(models.Model):
     name = models.CharField(max_length=256)
@@ -27,12 +29,14 @@ class Subject(models.Model):
     def __str__(self):
         return self.name
 
+
+#User model for both staff and client
 class User(AbstractBaseUser, PermissionsMixin):
     
     name = models.CharField(_('name'), max_length=256)
     email = models.EmailField(_('email address'), unique=True)
     mobile_no = models.CharField(max_length=10, unique=True)
-    class_no = models.ForeignKey(Standard, on_delete=models.CASCADE,  null=True)
+    class_no = models.ForeignKey(Standard, on_delete=models.CASCADE,  null=True, related_name="standard")
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True)
     location = models.CharField(max_length=256)
     is_staff = models.BooleanField(default=False)
@@ -51,8 +55,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-
 
 
 

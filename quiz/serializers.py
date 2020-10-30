@@ -8,11 +8,13 @@ class SubjectListSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
 class QuizListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
-        fields = ["title", "description", "total_marks", "publish_date","timestamp", "pk", "end_date"]
+        fields = ["title", "description", "total_marks", "publish_date","timestamp", "pk", "end_date", "id"]
     
+
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,10 +31,12 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
  
+
 class UserAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAnswer
         fields = "__all__"
+
 
 
 class MyQuizListSerializer(serializers.ModelSerializer):
@@ -41,12 +45,10 @@ class MyQuizListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Quiz
-        #fields = ["id", "title", "discription","completed","score"]
-        fields = "__all__"
+        fields =  ["title", "description", "total_marks", "publish_date","timestamp", "pk", "end_date", "completed", "score"]
 
     def get_completed(self, obj):
         try:
-            print(obj)
             userquiz = UserQuiz.objects.get(user=self.context['request'].user, quiz=obj)
             return userquiz.completed
         except UserQuiz.DoesNotExist:
@@ -66,6 +68,8 @@ class MyQuizListSerializer(serializers.ModelSerializer):
         except UserQuiz.DoesNotExist:
                 return None
 
+
+
 class UserAnswerQuestionSerializer(serializers.ModelSerializer):
     answer_title = serializers.SerializerMethodField()
     question_title = serializers.SerializerMethodField()
@@ -77,7 +81,6 @@ class UserAnswerQuestionSerializer(serializers.ModelSerializer):
     
     def get_answer_title(self, obj):
         try:
-            print(obj.answer.id)
             answer = Answer.objects.get(id=obj.answer.id)
             return answer.content
         except:
@@ -92,11 +95,12 @@ class UserAnswerQuestionSerializer(serializers.ModelSerializer):
     
     def get_answer_is_true(self, obj):
         try:
-            print(obj.answer.id)
             answer = Answer.objects.get(id=obj.answer.id)
             return answer.is_correct
         except:
             return None
+
+
 
 class UserQuizSerializer(serializers.ModelSerializer):
     useranswer_set = UserAnswerQuestionSerializer(many=True)
@@ -104,6 +108,7 @@ class UserQuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserQuiz
         fields = "__all__"
+
 
 
 class QuizResultSerializer(serializers.ModelSerializer):
@@ -123,6 +128,7 @@ class QuizResultSerializer(serializers.ModelSerializer):
 			return None
 
 
+
 class QuizDetailSerializer(serializers.ModelSerializer):
     userquiz_set = serializers.SerializerMethodField()
     questions = QuestionSerializer(many=True)
@@ -133,11 +139,12 @@ class QuizDetailSerializer(serializers.ModelSerializer):
     
     def get_userquiz_set(self, obj):
         try:
-            userquiz = UserQuiz.objects.filter(user=self.context['request'].user, quiz=obj)
+            userquiz = UserQuiz.objects.get(user=self.context['request'].user, quiz=obj)
             serializer = UserQuizSerializer(userquiz)
             return serializer.data
         except:
             return False
+
 
 
 class UserSubmitAnswerSerializer(serializers.ModelSerializer):
@@ -146,7 +153,6 @@ class UserSubmitAnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserQuiz
-        #fields = ("quiz_title", "score", "completed", "useranswer_set")
         fields = "__all__"
 
     def get_quiz_title(self, obj):

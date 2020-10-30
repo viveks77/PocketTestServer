@@ -49,8 +49,10 @@ def staffLoginView(request):
         return render(request,'Registration/login.html')
 
 
+
 class StaffVerification(LoginRequiredMixin, TemplateView):
     template_name="staffVerification.html"
+
 
 
 @method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
@@ -74,6 +76,7 @@ class QuizListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return self.request.user.quizes.all();
 
+
 @method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')
 class QuizCreateView(LoginRequiredMixin, CreateView):
     model = Quiz
@@ -83,6 +86,7 @@ class QuizCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         quiz = form.save(commit=False)
         quiz.owner = self.request.user
+        quiz.class_no = self.request.user.class_no
         quiz.subject = self.request.user.subject
         quiz.save()
         return redirect('quizEdit', quiz.pk)
@@ -139,6 +143,8 @@ class QuizResultView(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         return self.request.user.quizes.all()
 
+
+
 @staff_member_required(login_url='staffverify')
 @login_required
 def questionAdd(request, pk):
@@ -157,6 +163,7 @@ def questionAdd(request, pk):
         form = QuestionForm()
 
     return render(request, 'Question/questionAdd.html', {'quiz':quiz, 'form':form})
+
 
 
 @staff_member_required(login_url='staffverify')
@@ -193,6 +200,7 @@ def questionEdit(request, quiz_pk, question_pk):
         'form':form,
         'formset':formset
     })
+
 
 
 @method_decorator(staff_member_required(login_url='staffverify'), name='dispatch')

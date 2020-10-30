@@ -9,6 +9,7 @@ from django.template.defaultfilters import slugify
 class Quiz(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="quizes")
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    class_no = models.ForeignKey(Standard, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
     description = models.CharField(max_length=256)
     total_marks = models.IntegerField(default=0)

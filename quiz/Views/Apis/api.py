@@ -27,8 +27,8 @@ class QuizListAPI(generics.ListAPIView):
     
     def get_queryset(self, **kwargs):
         slug = self.kwargs['slug']
-        subject = get_object_or_404(Subject, slug=slug)
-        queryset = Quiz.objects.filter(subject=subject)
+        subject = get_object_or_404(Subject, slug=slug, class_no=self.request.user.class_no)
+        queryset = Quiz.objects.filter(subject=subject).order_by('-timestamp')
         return queryset
 
 
@@ -39,7 +39,9 @@ class MyQuizListAPI(generics.ListCreateAPIView):
     serializer_class = MyQuizListSerializer
 
     def get_queryset(self,*args, **kwargs):
-        queryset = Quiz.objects.filter(taken_quizzes__user = self.request.user)
+        slug = self.kwargs['slug']
+        subject = get_object_or_404(Subject, slug=slug, class_no=self.request.user.class_no)
+        queryset = Quiz.objects.filter(taken_quizzes__user = self.request.user, subject=subject)
         return queryset
 
 
@@ -52,7 +54,6 @@ class QuizDetailAPI(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         pk = self.kwargs['pk']
         quiz = get_object_or_404(Quiz, pk=pk)
-        last_question = None
         return Response({'quiz': self.get_serializer(quiz, context={'request':self.request}).data})
 
 

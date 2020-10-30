@@ -22,7 +22,6 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, attrs):
-        print(attrs)
         user = authenticate(**attrs)
         if user:
             return user
@@ -32,7 +31,7 @@ class LoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ("id", "name", "email", "mobile_no", "location", "is_student", "class_no")
 
     
 
@@ -44,7 +43,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["name", "mobile_no", "location", "class_no"]
+        fields = ["name", "location"]
 
 class ClassSerializer(serializers.ModelSerializer):
     class Meta:

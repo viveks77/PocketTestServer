@@ -83,13 +83,13 @@ class UserUpdateAPI(UpdateAPIView):
         return self.request.user
 
     def update(self, request, *args, **kwargs):
-        user = self.get_object()
+        user = User.objects.get(email=self.request.user.email)
+        if not user:
+            return Response(serializer.erros, status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user.name = serializer.data.get('name')
-            user.mobile_no = serializer.data.get('mobile_no')
             user.location = serializer.data.get('location')
-            user.class_n0 = serializer.data.get('class_no')
             user.save()
             return Response({
                 "user":UserSerializer(user).data

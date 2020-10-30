@@ -21,7 +21,7 @@ urlpatterns=[
         path('getsubject', api.SubjectListApi.as_view()),
         path('<slug:slug>/getquiz',api.QuizListAPI.as_view()),
         path('quiz/<int:pk>/', api.QuizDetailAPI.as_view()),
-        path('myquiz',api.MyQuizListAPI.as_view()),
+        path('<slug:slug>/myquiz',api.MyQuizListAPI.as_view()),
         path('quiz/<int:pk>/submit/',api.SubmitQuizAPI.as_view()),
         path('quiz/<int:pk>/getAnswers/',api.GetUserAnswer.as_view()),
     ])),

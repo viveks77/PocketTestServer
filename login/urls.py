@@ -9,5 +9,5 @@ urlpatterns = [
     path('logout',LogoutView.as_view()),
     path('resetpass',ResetPasswordAPI.as_view()),
     path('update',UserUpdateAPI.as_view()),
-    path('getClass',ClassListAPI.as_view()),
+    path('getclass',ClassListAPI.as_view()),
 ]

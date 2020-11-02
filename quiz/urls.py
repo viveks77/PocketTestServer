@@ -23,7 +23,7 @@ urlpatterns=[
         path('quiz/<int:pk>/', api.QuizDetailAPI.as_view()),
         path('<slug:slug>/myquiz',api.MyQuizListAPI.as_view()),
         path('quiz/<int:pk>/submit/',api.SubmitQuizAPI.as_view()),
-        path('quiz/<int:pk>/getAnswers/',api.GetUserAnswer.as_view()),
+        path('quiz/<int:pk>/getanswers/',api.GetUserAnswer.as_view()),
     ])),
     path('ajax/load-subjects/', views.load_subjects, name="ajax_load_subjects")
 ]

@@ -10,13 +10,13 @@
 
 ## Screenshots for staff website
 
-[Loginpage](sceenshots/LoginScreen.png)
+![Loginpage](screenshots/LoginScreen.png)
 
-[Homepage](screenshots/Homepage.png)
+![Homepage](screenshots/Homepage.png)
 
-[Add new quiz](screenshots/AddQuiz.png)
+![Add new quiz](screenshots/AddQuiz.png)
 
-[Quiz details](screenshots/QuizDetails.png)
+![Quiz details](screenshots/QuizDetails.png)
 
 
 ## Running the project locally
